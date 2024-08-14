@@ -1,0 +1,32 @@
+.navbar {
+    padding: 10px 20px;
+}
+
+.logo {
+    font-size: 50px;
+    color: white;
+}
+
+.logo2 {
+    font-size: 20px;
+    color: white;
+}
+
+.navbar-location {
+    color: white;
+    padding: 6px;
+}
+.navbar-location:hover{
+    border: solid 1px white;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 5px;
+}
+
+.form-control {
+    border-radius: 0;
+}
+
+.btn-warning {
+    border-radius: 0;
+}

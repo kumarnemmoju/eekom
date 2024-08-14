@@ -1,0 +1,31 @@
+.card-header {
+    background-color: #ffc107 !important;
+    color: #fff !important;
+  }
+  
+  .list-group-item {
+    background-color: #fff;
+    border: none;
+    padding: 15px 0;
+  }
+  
+  .list-group-item + .list-group-item {
+    border-top: 1px solid #ddd;
+  }
+  
+  .img-fluid {
+    border-radius: 8px;
+  }
+  
+  h3, h4 {
+    color: #343a40;
+  }
+  
+  .text-muted del {
+    font-size: 0.9em;
+  }
+  
+  .badge-success {
+    background-color: #28a745;
+  }
+  

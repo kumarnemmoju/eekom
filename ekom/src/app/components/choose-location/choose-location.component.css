@@ -1,0 +1,11 @@
+.input-group {
+  display: flex;
+  width: 100%;
+}
+.form-control {
+  flex: 1;
+  margin-right: 10px;
+}
+.btn-primary {
+  flex-shrink: 0;
+}

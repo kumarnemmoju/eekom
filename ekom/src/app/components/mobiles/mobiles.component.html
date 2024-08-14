@@ -1,0 +1,359 @@
+<div class="container-fluid" style="margin-top: 5px;">
+    <div class="row">
+      <!-- Filter Sidebar -->
+      <div class="col-md-2">
+        <div
+          class="bg-light p-3"
+          style="position: sticky; top: 10px; height: 100vh; overflow-y: auto;"
+        >
+          <h5>Filters</h5>
+  
+          <!-- Sorting Dropdown -->
+          <div class="mb-3">
+            <p>
+              Total Results: {{ filteredMobiles.length }}
+              <a style="float: right;" href="#" (click)="resetFilters()"
+                >ResetAll</a
+              >
+            </p>
+            <div class="dropdown">
+              <button
+                class="btn btn-warning dropdown-toggle w-100"
+                type="button"
+                id="dropdownMenuButton"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Sort by
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <li>
+                  <a class="dropdown-item" (click)="sortBy('lowToHigh')"
+                    >Price: Low to High</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" (click)="sortBy('highToLow')"
+                    >Price: High to Low</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" (click)="sortBy('newestFirst')"
+                    >Newest First</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" (click)="sortBy('customerReview')"
+                    >Customer Review</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+  
+          <!-- Rating Filter -->
+          <h6>Customer Rating</h6>
+          <div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="rating"
+                id="rating5"
+                (click)="filterByRating(5.0)"
+              />
+              <label class="form-check-label" for="rating5">
+                &#9733;&#9733;&#9733;&#9733;&#9733; (5 stars)
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="rating"
+                id="rating4"
+                (click)="filterByRating(4.0)"
+              />
+              <label class="form-check-label" for="rating4">
+                &#9733;&#9733;&#9733;&#9733;&#9734; & Up (4 stars)
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="rating"
+                id="rating3"
+                (click)="filterByRating(3.0)"
+              />
+              <label class="form-check-label" for="rating3">
+                &#9733;&#9733;&#9733;&#9734;&#9734; & Up (3 stars)
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="rating"
+                id="rating2"
+                (click)="filterByRating(2.0)"
+              />
+              <label class="form-check-label" for="rating2">
+                &#9733;&#9733;&#9734;&#9734;&#9734; & Up (2 stars)
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="rating"
+                id="rating1"
+                (click)="filterByRating(1.0)"
+                checked
+              />
+              <label class="form-check-label" for="rating1">
+                &#9733;&#9734;&#9734;&#9734;&#9734; & Up (1 star)
+              </label>
+            </div>
+          </div>
+  
+          <!-- Brand Filter Dropdown -->
+          <h6 class="mt-3">Brand</h6>
+          <div class="dropdown">
+            <button
+              class="btn btn-warning dropdown-toggle w-100"
+              type="button"
+              id="brandDropdown"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              Select Brand
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="brandDropdown">
+              <li>
+                <a class="dropdown-item" (click)="filterByBrand('All')">All</a>
+              </li>
+              <li>
+                <a class="dropdown-item" (click)="filterByBrand('Samsung')"
+                  >Samsung</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" (click)="filterByBrand('Apple')">Apple</a>
+              </li>
+              <li>
+                <a class="dropdown-item" (click)="filterByBrand('Google')"
+                  >Google</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" (click)="filterByBrand('OnePlus')"
+                  >OnePlus</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" (click)="filterByBrand('Xiaomi')"
+                  >Xiaomi</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" (click)="filterByBrand('Oppo')">Oppo</a>
+              </li>
+              <li>
+                <a class="dropdown-item" (click)="filterByBrand('Vivo')">Vivo</a>
+              </li>
+              <li>
+                <a class="dropdown-item" (click)="filterByBrand('Realme')"
+                  >Realme</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" (click)="filterByBrand('Motorola')"
+                  >Motorola</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" (click)="filterByBrand('Sony')">Sony</a>
+              </li>
+            </ul>
+          </div>
+  
+          <!-- RAM Filter Dropdown -->
+          <h6 class="mt-3">RAM</h6>
+          <div class="dropdown">
+            <button
+              class="btn btn-warning dropdown-toggle w-100"
+              type="button"
+              id="ramDropdown"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              Select RAM
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="ramDropdown">
+              <li>
+                <a class="dropdown-item" (click)="filterByRam('2GB')">2GB</a>
+              </li>
+              <li>
+                <a class="dropdown-item" (click)="filterByRam('4GB')">4GB</a>
+              </li>
+              <li>
+                <a class="dropdown-item" (click)="filterByRam('8GB')">8GB</a>
+              </li>
+              <li>
+                <a class="dropdown-item" (click)="filterByRam('16GB')">16GB</a>
+              </li>
+              <li>
+                <a class="dropdown-item" (click)="filterByRam('32GB')">32GB</a>
+              </li>
+            </ul>
+          </div>
+  
+          <!-- ROM Filter Dropdown -->
+          <h6 class="mt-3">ROM</h6>
+          <div class="dropdown">
+            <button
+              class="btn btn-warning dropdown-toggle w-100"
+              type="button"
+              id="romDropdown"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              Select ROM
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="romDropdown">
+              <li>
+                <a class="dropdown-item" (click)="filterByRom('16GB')">16GB</a>
+              </li>
+              <li>
+                <a class="dropdown-item" (click)="filterByRom('32GB')">32GB</a>
+              </li>
+              <li>
+                <a class="dropdown-item" (click)="filterByRom('64GB')">64GB</a>
+              </li>
+              <li>
+                <a class="dropdown-item" (click)="filterByRom('128GB')">128GB</a>
+              </li>
+              <li>
+                <a class="dropdown-item" (click)="filterByRom('256GB')">256GB</a>
+              </li>
+              <li>
+                <a class="dropdown-item" (click)="filterByRom('512GB')">512GB</a>
+              </li>
+            </ul>
+          </div>
+  
+          <!-- Price Range Filter with Reset Button -->
+          <div class="d-flex justify-content-between align-items-center mt-3">
+            <h6>Price Range</h6>
+          </div>
+          <div class="input-group mb-3">
+            <input
+              type="number"
+              class="form-control"
+              placeholder="Min"
+              [(ngModel)]="minPrice"
+              [min]="minPrice"
+              [max]="maxPrice"
+            />
+            <input
+              type="number"
+              class="form-control"
+              placeholder="Max"
+              [(ngModel)]="maxPrice"
+              [min]="minPrice"
+              [max]="maxPrice"
+            />
+          </div>
+          <button class="btn btn-warning w-100" (click)="filterByPriceRange()">
+            Apply Price Filter
+          </button>
+        </div>
+      </div>
+  
+      <!-- Mobile View -->
+      <div class="col-md-10">
+        <!-- Display Selected Filters -->
+        <div *ngIf="getSelectedFilterKeys().length > 0" class="mb-3">
+          <strong>Selected Filters:</strong>
+          <span
+            *ngFor="let key of getSelectedFilterKeys()"
+            class="badge bg-warning text-dark me-2"
+          >
+            {{ selectedFilters[key] }}
+            <a href="#" (click)="removeFilter(key)">x</a>
+          </span>
+          <a href="#" (click)="resetFilters()">Clear All</a>
+        </div>
+  
+        <!-- No Mobiles Message -->
+        <div *ngIf="filteredMobiles.length === 0" class="text-center py-5">
+          <div class="alert alert-warning" role="alert">
+            <div class="mb-3">
+              <i class="bi bi-emoji-frown display-1 text-warning"></i>
+            </div>
+            <h4 class="alert-heading">No Mobiles Found!</h4>
+            <p class="lead">
+              Unfortunately, we couldn't find any mobiles that match your search
+              criteria.
+            </p>
+            <hr />
+            <p class="mb-4">
+              Try adjusting your filters or resetting them to see more options.
+            </p>
+            <button class="btn btn-warning" (click)="resetFilters()">
+              <i class="bi bi-arrow-counterclockwise"></i> Reset Filters
+            </button>
+          </div>
+        </div>
+  
+        <!-- Mobile List -->
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4" *ngIf="filteredMobiles.length > 0">
+          <div class="col" *ngFor="let mobile of paginatedMobiles">
+            <div class="card h-100 shadow-sm">
+              <img
+                [src]="mobile.imageUrl"
+                class="card-img-top"
+                [alt]="mobile.name"
+                style="height: auto; max-height: 250px; width: 100%; object-fit: contain;"
+              />
+              <div class="card-body p-2">
+                <h6 class="card-title">{{ mobile.name }}</h6>
+                <p class="text-muted mb-1">{{ mobile.series }} | {{ mobile.year }}</p>
+                <p class="card-text mb-2">
+                  {{ mobile.ram }} RAM, {{ mobile.storage }} Storage<br />
+                  <span class="text-success fw-bold">${{ mobile.price }}</span>
+                  <span class="text-muted"
+                    ><del>${{ mobile.originalPrice }}</del></span
+                  ><br />
+                  <span class="text-success">{{ mobile.discount }}% off</span><br />
+                  <span class="text-warning">&#9733;&#9733;&#9733;&#9733;&#9734; ({{ mobile.reviews }})</span>
+                </p>
+                <div class="d-grid gap-2">
+                  <button class="btn btn-warning btn-sm">Add to Cart</button>
+                  <button class="btn btn-outline-warning btn-sm">Move to Wishlist</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Bootstrap Pagination -->
+        <nav aria-label="Page navigation example" class="d-flex justify-content-center mt-3">
+          <ul class="pagination custom-pagination">
+            <li class="page-item" [class.disabled]="pageIndex === 0" (click)="setPage(pageIndex - 1)">
+              <a class="page-link" href="javascript:void(0)">Previous</a>
+            </li>
+            <li class="page-item" *ngFor="let page of totalPagesArray(); let i = index"
+                [class.active]="i === pageIndex" (click)="setPage(i)">
+              <a class="page-link" href="javascript:void(0)">{{ i + 1 }}</a>
+            </li>
+            <li class="page-item" [class.disabled]="pageIndex === totalPages() - 1" (click)="setPage(pageIndex + 1)">
+              <a class="page-link" href="javascript:void(0)">Next</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+  

@@ -1,0 +1,7 @@
+/* You can add this CSS to the global styles or in the specific styles of the components */
+app-header-two {
+  position: -webkit-sticky; /* For Safari */
+  position: sticky;
+  top: 0; /* Adjust the value as needed */
+  z-index: 1000; /* Ensure they stay above other content */
+}

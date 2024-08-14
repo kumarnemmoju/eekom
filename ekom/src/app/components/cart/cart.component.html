@@ -1,0 +1,45 @@
+<div class="container mt-5">
+    <div class="card">
+      <div *ngIf="itemsInCart.length > 0; else emptyCart">
+        <div class="card-header bg-warning text-center text-white">
+          <h2>Your Cart</h2>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li *ngFor="let item of itemsInCart" class="list-group-item">
+            <div class="row align-items-center">
+              <!-- Mobile Image -->
+              <div class="col-md-3 text-center">
+                <img [src]="item.imageUrl" alt="{{ item.name }}" class="img-fluid rounded" width="150">
+              </div>
+              <!-- Mobile Description -->
+              <div class="col-md-5">
+                <h3 class="mt-0">{{ item.name }}</h3>
+                <p>Series: {{ item.series }}</p>
+                <p>Year: {{ item.year }}</p>
+                <p>RAM: {{ item.ram }}</p>
+                <p>Storage: {{ item.storage }}</p>
+              </div>
+              <!-- Pricing and Discount -->
+              <div class="col-md-4 text-right">
+                <p class="text-muted"><del>${{ item.originalPrice }}</del></p>
+                <h4 class="text-warning">${{ item.price }}</h4>
+                <p class="badge badge-success">{{ item.discount }}% OFF</p>
+                <p class="text-warning">Rating: {{ item.rating }} ({{ item.reviews }} reviews)</p>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      
+      <ng-template #emptyCart>
+        <div class="card-header bg-warning text-center text-white">
+          <h2>Your Cart is Empty</h2>
+        </div>
+        <div class="card-body text-center">
+          <p>It seems you haven't added any items to your cart yet.</p>
+          <a href="/" class="btn btn-warning text-white">Continue Shopping</a>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+  
