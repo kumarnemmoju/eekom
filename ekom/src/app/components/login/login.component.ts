@@ -40,14 +40,18 @@ export class LoginComponent implements OnInit {
             duration: 3000,
             panelClass: ['snackbar-success'],
           });
-          localStorage.setItem('userEmail', email);
-          localStorage.setItem('userPass', password);
+  
+          if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+            localStorage.setItem('userEmail', email);
+            localStorage.setItem('userPass', password);
+          }
+  
           this.cartService.loadUsersData();
           this.router.navigate(['/category/mobiles']);
         },
         (error) => {
           let errorMessage = 'An error occurred. Please try again.';
-
+  
           if (error.status === 400) {
             errorMessage = 'Invalid request. Please check your input.';
           } else if (error.status === 401) {
@@ -55,7 +59,7 @@ export class LoginComponent implements OnInit {
           } else if (error.status === 500) {
             errorMessage = 'Server error. Please try again later.';
           }
-
+  
           this.snackBar.open(errorMessage, 'Close', {
             duration: 3000,
             panelClass: ['snackbar-error'],
@@ -69,4 +73,5 @@ export class LoginComponent implements OnInit {
       });
     }
   }
+  
 }

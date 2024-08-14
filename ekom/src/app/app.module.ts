@@ -29,6 +29,8 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { CartComponent } from './components/cart/cart.component';
 import { RegisterComponent } from './components/register/register.component';
 import { HomeAndKitchenComponent } from './components/home-and-kitchen/home-and-kitchen.component';
+import { AddressComponent } from './components/address/address.component';
+import { FinalPriceComponent } from './components/final-price/final-price.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -51,7 +53,9 @@ import { HomeAndKitchenComponent } from './components/home-and-kitchen/home-and-
     NotFoundComponent,
     CartComponent,
     RegisterComponent,
-    HomeAndKitchenComponent
+    HomeAndKitchenComponent,
+    AddressComponent,
+    FinalPriceComponent
   ],
   imports: [
     BrowserModule,

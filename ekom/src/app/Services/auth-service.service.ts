@@ -32,7 +32,7 @@ export class AuthServiceService {
   login(email: string, password: string): Observable<any> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const body = JSON.stringify({ email, password });
-    return this.http.post<any>(`${this.baseUrl}/login`, body, { headers });
+    return this.http.post<any>(`${this.baseUrl}/users/login`, body, { headers });
   }
 
   register(userData: { firstName: string; lastName: string; email: string; password: string }): Observable<any> {
@@ -47,7 +47,7 @@ export class AuthServiceService {
     };
 
     const body = JSON.stringify(fullUserData);
-    return this.http.post<any>(`${this.baseUrl}/register`, body, { headers });
+    return this.http.post<any>(`${this.baseUrl}/users/register`, body, { headers });
   }
 
   getAllUsers(): Observable<any[]> {

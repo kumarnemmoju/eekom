@@ -1,8 +1,4 @@
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
-import { AuthServiceService } from '../../Services/auth-service.service';
-import { isPlatformBrowser } from '@angular/common';
-import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { CartService } from '../../Services/cart.service';
 
 @Component({
