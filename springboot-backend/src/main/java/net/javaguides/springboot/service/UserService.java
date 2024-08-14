@@ -32,6 +32,9 @@ public class UserService {
             Optional<Mobile> mobileOptional = mobileRepository.findById(mobileId);
             if (mobileOptional.isPresent()) {
                 Mobile mobile = mobileOptional.get();
+                if (user.getItemsInCart().contains(mobile)) {
+                    return "Mobile is already in the cart!";
+                }
                 user.getItemsInCart().add(mobile);
                 userRepository.save(user);
                 return "Mobile added to cart successfully!";
