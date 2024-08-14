@@ -1,10 +1,8 @@
 package net.javaguides.springboot.controller;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import net.javaguides.springboot.model.Mobile;
 import net.javaguides.springboot.service.MobileService;
 
@@ -39,11 +37,7 @@ public class MobileController {
     @PutMapping("/{mobileId}")
     public ResponseEntity<Mobile> updateMobile(@PathVariable long mobileId, @RequestBody Mobile mobileDetails) {
         Mobile updatedMobile = mobileService.updateMobile(mobileId, mobileDetails);
-        if (updatedMobile != null) {
-            return ResponseEntity.ok(updatedMobile);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.ok(updatedMobile);
     }
 
     @DeleteMapping("/{mobileId}")
@@ -52,4 +46,3 @@ public class MobileController {
         return ResponseEntity.noContent().build();
     }
 }
-

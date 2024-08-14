@@ -1,12 +1,15 @@
 package net.javaguides.springboot.model;
 
 import jakarta.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "users")
 public class User {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private String firstName;
@@ -14,15 +17,15 @@ public class User {
     private String email;
     private String password;
 
-    @ElementCollection
-    private List<String> itemsInCart;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+        name = "user_items_in_cart",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "mobile_id")
+    )
+    private List<Mobile> itemsInCart = new ArrayList<>();
 
-    @ElementCollection
-    private List<String> itemsInWishlist;
-
-    @ElementCollection
-    private List<String> addressesOfUser;
-
+    // Getters and setters
     public int getId() {
         return id;
     }
@@ -63,27 +66,11 @@ public class User {
         this.password = password;
     }
 
-    public List<String> getItemsInCart() {
+    public List<Mobile> getItemsInCart() {
         return itemsInCart;
     }
 
-    public void setItemsInCart(List<String> itemsInCart) {
+    public void setItemsInCart(List<Mobile> itemsInCart) {
         this.itemsInCart = itemsInCart;
-    }
-
-    public List<String> getItemsInWishlist() {
-        return itemsInWishlist;
-    }
-
-    public void setItemsInWishlist(List<String> itemsInWishlist) {
-        this.itemsInWishlist = itemsInWishlist;
-    }
-
-    public List<String> getAddressesOfUser() {
-        return addressesOfUser;
-    }
-
-    public void setAddressesOfUser(List<String> addressesOfUser) {
-        this.addressesOfUser = addressesOfUser;
     }
 }
