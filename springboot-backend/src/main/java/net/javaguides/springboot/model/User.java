@@ -25,6 +25,18 @@ public class User {
     )
     private List<Mobile> itemsInCart = new ArrayList<>();
 
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+        name = "user_items_in_wishlist",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "mobile_id")
+    )
+    private List<Mobile> itemsInWishlist = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private List<Address> addresses = new ArrayList<>();
+
     // Getters and setters
     public int getId() {
         return id;
@@ -72,5 +84,21 @@ public class User {
 
     public void setItemsInCart(List<Mobile> itemsInCart) {
         this.itemsInCart = itemsInCart;
+    }
+
+    public List<Mobile> getItemsInWishlist() {
+        return itemsInWishlist;
+    }
+
+    public void setItemsInWishlist(List<Mobile> itemsInWishlist) {
+        this.itemsInWishlist = itemsInWishlist;
+    }
+
+    public List<Address> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
     }
 }
