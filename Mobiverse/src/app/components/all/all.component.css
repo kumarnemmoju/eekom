@@ -1,0 +1,163 @@
+.mobile-card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+    border-radius: 5px;
+    height: 100%;
+}
+
+.mobile-card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+.mobile-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px 5px 0 0;
+}
+
+.mobile-info {
+    padding: 10px; /* Reduced padding */
+}
+
+.card-title {
+    font-size: 1rem; /* Reduced font size */
+    margin-bottom: 5px;
+}
+
+.card-text {
+    font-size: 0.9rem; /* Reduced font size */
+    margin-bottom: 5px;
+}
+
+.mobile-price {
+    font-size: 1rem; /* Reduced font size */
+    color: #28a745;
+}
+
+.mobile-original-price {
+    text-decoration: line-through;
+    color: #888;
+    font-size: 0.8rem; /* Reduced font size */
+}
+
+.mobile-rating {
+    color: #ffc107;
+}
+
+.mobile-discount {
+    font-size: 0.9rem;
+    color: #dc3545;
+}
+
+.reviews {
+    font-size: 0.8rem; /* Reduced font size */
+    color: #555;
+}
+
+
+
+/* Pagination Styles */
+.page-link {
+    color: #28a745 !important;
+}
+
+.page-link:hover {
+    background-color: #e8f5e9 !important;
+    border-color: #28a745 !important;
+}
+
+.page-item.active .page-link {
+    background-color: #28a745 !important;
+    border-color: #28a745 !important;
+    color: white !important;
+}
+
+/* Secondary Button Styles */
+.btn-secondary {
+    background-color: #6c757d !important; /* Ensure the color */
+    border-color: #6c757d !important;
+}
+
+.btn-custom {
+    width: 48%;
+    font-size: 0.8rem;
+}
+
+/* Filters Theme */
+.filters-section {
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.filters-section h5 {
+    color: #28a745;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.filters-section .form-label {
+    color: #28a745;
+    font-weight: bold;
+}
+
+
+
+.action-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.btn-custom {
+    width: 48%;
+    font-size: 0.8rem; /* Reduced font size */
+}
+
+.btn-custom:hover {
+    background-color: #218838 !important;
+    border-color: #1e7e34 !important;
+}
+
+.filters-section .form-select,
+.filters-section .input-group-text,
+.filters-section .form-control {
+    background-color: #ffffff;
+    border-color: #28a745;
+    color: #28a745;
+}
+
+.filters-section .form-select:focus,
+.filters-section .form-control:focus {
+    border-color: #28a745;
+    box-shadow: none;
+}
+
+.filters-section .input-group-text {
+    border-right: 0;
+}
+
+.filters-section .form-control {
+    border-left: 0;
+}
+
+
+
+.selected-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.badge {
+    font-size: 0.9rem;
+    padding: 0.5rem 0.75rem;
+    display: inline-flex;
+    align-items: center;
+}
+
+.btn-close {
+    margin-left: 0.5rem;
+    padding: 0;
+}

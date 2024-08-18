@@ -1,0 +1,61 @@
+.cart-image {
+  max-width: 100px; /* Smaller image size */
+  height: auto;
+}
+
+.card-body {
+  padding: 0.75rem;
+}
+
+.mobile-rating {
+  color: #ffc107;
+}
+
+.card-text .badge {
+  font-size: 0.85rem;
+}
+
+.card-title {
+  font-size: 1.1rem;
+  margin-bottom: 0.25rem;
+}
+
+.card-text {
+  font-size: 0.9rem;
+}
+
+.container {
+  max-width: 960px; /* Limit the container width */
+}
+
+h2 {
+  font-size: 1.75rem;
+}
+
+.position-absolute {
+  top: 0;
+  right: 0;
+}
+
+.bi-heart {
+  margin-right: 10px;
+}
+
+.form-control-sm {
+  width: 60px; /* Set a fixed width for the quantity input */
+}
+
+.position-absolute.bottom-0.end-0.m-2 {
+  display: flex;
+  justify-content: end;
+  align-items: end;
+}
+.greenBox {
+  background-color: #28a745;
+  color: white;
+  padding-top: 6px;
+  padding-bottom: 1px;
+  border-radius: 5px;
+  text-align: center;
+  margin-top: 15px;
+}

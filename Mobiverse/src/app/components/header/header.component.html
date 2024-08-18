@@ -1,0 +1,70 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary custom-navbar">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Mobiverse</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <form class="d-flex flex-grow-1 me-2" role="search">
+        <input
+          class="form-control me-2"
+          type="search"
+          placeholder="Search"
+          aria-label="Search"
+        />
+        <button class="btn btn-secondary" type="submit">Search</button>
+      </form>
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item me-3">
+          <!-- Added me-3 -->
+          <a
+            class="nav-link text-white"
+            routerLink="/all"
+            routerLinkActive="activated"
+            >Mobiles</a
+          >
+        </li>
+        <li class="nav-item me-3">
+          <!-- Added me-3 -->
+          <a class="nav-link text-white" href="#">Are You A Seller?</a>
+        </li>
+        <li class="nav-item me-3" *ngIf="userName == null">
+          <!-- Added me-3 -->
+          <a
+            class="nav-link text-white"
+            routerLink="/register"
+            routerLinkActive="activated"
+            >SignIn/SignUp</a
+          >
+        </li>
+        <li class="nav-item dropdown" *ngIf="userName != null">
+          <a style="text-transform: capitalize;"
+            class="nav-link dropdown-toggle"
+            href="#"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            {{ userName }}
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item">Your Account</a></li>
+            <li><a class="dropdown-item" routerLink="/cart">Your Cart</a></li>
+            <li><a class="dropdown-item">Your Wishlist</a></li>
+            <li><a class="dropdown-item">Your Addresses</a></li>
+            <li><hr class="dropdown-divider" /></li>
+            <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

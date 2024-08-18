@@ -1,0 +1,205 @@
+<div *ngIf="displayedMobiles.length > 0; else noMobilesTemplate">
+  <div class="container-fluid my-2">
+    <div class="row">
+      <!-- Filters Section -->
+      <div class="col-md-2">
+        <div class="filters-section">
+          <h5 *ngIf="selectedFilters.length > 0">Selected Filters</h5>
+          <!-- Display Selected Filters -->
+          <div class="mb-3" *ngIf="selectedFilters.length > 0">
+            <div class="selected-filters">
+              <ng-container *ngFor="let filter of selectedFilters">
+                <span class="badge bg-success me-1">
+                  {{ filter.name }}: {{ filter.value }}
+                  <button
+                    type="button"
+                    class="btn-close btn-close-white ms-2"
+                    aria-label="Remove"
+                    (click)="removeFilter(filter)"
+                  ></button>
+                </span>
+              </ng-container>
+            </div>
+            <button
+              type="button"
+              class="btn btn-outline-danger btn-sm mt-2"
+              (click)="clearAllFilters()"
+            >
+              Clear All
+            </button>
+          </div>
+
+          <h5>Filters</h5>
+
+          <!-- Sort by -->
+          <div class="mb-3">
+            <label for="sortFilter" class="form-label">Sort by</label>
+            <select
+              class="form-select"
+              id="sortFilter"
+              (change)="onFilterChange('Sort by', $event)"
+            >
+              <option selected value="">Select Sort Option</option>
+              <option value="lowToHigh">Price: Low to High</option>
+              <option value="highToLow">Price: High to Low</option>
+              <option value="newestFirst">Newest First</option>
+            </select>
+          </div>
+
+          <!-- Filter by Brand -->
+          <div class="mb-3">
+            <label for="brandFilter" class="form-label">Filter by Brand</label>
+            <select
+              class="form-select"
+              id="brandFilter"
+              (change)="onFilterChange('Brand', $event)"
+            >
+              <option selected value="">Select Brand</option>
+              <option value="apple">Apple</option>
+              <option value="samsung">Samsung</option>
+              <option value="oneplus">OnePlus</option>
+              <option value="xiaomi">Xiaomi</option>
+              <option value="google">Google</option>
+            </select>
+          </div>
+
+          <!-- Filter by Rating -->
+          <div class="mb-3">
+            <label for="ratingFilter" class="form-label">Filter by Rating</label>
+            <select
+              class="form-select"
+              id="ratingFilter"
+              (change)="onFilterChange('Rating', $event)"
+            >
+              <option selected value="">Select Rating</option>
+              <option value="5">★★★★★</option>
+              <option value="4">★★★★☆ & Up</option>
+              <option value="3">★★★☆☆ & Up</option>
+              <option value="2">★★☆☆☆ & Up</option>
+              <option value="1">★☆☆☆☆ & Up</option>
+            </select>
+          </div>
+
+          <!-- Filter by RAM -->
+          <div class="mb-3">
+            <label for="ramFilter" class="form-label">Filter by RAM</label>
+            <select
+              class="form-select"
+              id="ramFilter"
+              (change)="onFilterChange('RAM', $event)"
+            >
+              <option selected value="">Select RAM</option>
+              <option value="4gb">4GB</option>
+              <option value="6gb">6GB</option>
+              <option value="8gb">8GB</option>
+              <option value="12gb">12GB</option>
+              <option value="16gb">16GB</option>
+            </select>
+          </div>
+
+          <!-- Filter by ROM -->
+          <div class="mb-3">
+            <label for="romFilter" class="form-label">Filter by ROM</label>
+            <select
+              class="form-select"
+              id="romFilter"
+              (change)="onFilterChange('ROM', $event)"
+            >
+              <option selected value="">Select ROM</option>
+              <option value="64gb">64GB</option>
+              <option value="128gb">128GB</option>
+              <option value="256gb">256GB</option>
+              <option value="512gb">512GB</option>
+            </select>
+          </div>
+
+          <!-- Filter by Price -->
+          <div class="mb-3">
+            <label for="priceFilter" class="form-label">Filter by Price</label>
+            <div class="input-group">
+              <input
+                type="number"
+                class="form-control"
+                id="minPrice"
+                placeholder="Min"
+                aria-label="Minimum price"
+                (change)="onFilterChange('Min Price', $event)"
+              />
+              <input
+                type="number"
+                class="form-control"
+                id="maxPrice"
+                placeholder="Max"
+                aria-label="Maximum price"
+                (change)="onFilterChange('Max Price', $event)"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile Listing Section -->
+      <div class="col-md-10">
+        <div class="row">
+          <div class="col-md-3" *ngFor="let mobile of displayedMobiles">
+            <div class="card mobile-card">
+              <img
+                [src]="mobile.imageUrl"
+                class="card-img-top mobile-image"
+                [alt]="mobile.name"
+              />
+              <div class="card-body mobile-info">
+                <h5 class="card-title">{{ mobile.name }}</h5>
+                <p class="card-text">
+                  {{ mobile.ram }} RAM, {{ mobile.storage }} Storage
+                </p>
+                <p class="card-text mobile-price">
+                  \${{ mobile.price }}
+                  <span class="mobile-original-price"
+                  >\${{ mobile.originalPrice }}</span>
+                </p>
+                <p class="card-text mobile-discount">
+                  {{ mobile.discount }}% Off
+                </p>
+                <p class="card-text">
+                  <span class="mobile-rating">{{
+                  "★".repeat(mobile.rating)
+                  }}</span>
+                  <span class="reviews">({{ mobile.reviews }} reviews)</span>
+                </p>
+                <div class="action-buttons">
+                  <button class="btn btn-primary btn-custom" (click)="addToCart(mobile.mobileId)">Add to Cart</button>
+                  <button class="btn btn-secondary btn-custom">
+                    Move to Wishlist
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- No Mobiles Available Template -->
+<ng-template #noMobilesTemplate>
+  <div class="container text-center my-5">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card shadow-lg p-4 mb-5 bg-white rounded">
+          <div class="card-body">
+            <h1 class="display-4" style="color: #28a745;">No Mobiles Available</h1>
+            <p class="lead mt-3" style="color: #6c757d;">
+              Unfortunately, there are no mobiles matching your criteria at the moment.
+              Please try adjusting your filters or check back later.
+            </p>
+            <button class="btn btn-primary btn-custom btn-lg mt-4" (click)="clearAllFilters()">
+              Reset Filters
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

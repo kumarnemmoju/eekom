@@ -1,0 +1,39 @@
+.card {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    min-height: 300px !important;
+}
+.form-control {
+    border-radius: 30px;
+    padding-left: 45px;
+}
+.form-control:focus {
+    box-shadow: none;
+    border-color: #218838;
+}
+.input-icon {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.btn-custom {
+    border-radius: 30px;
+    background: #218838;
+    color: #fff;
+}
+.btn-custom:hover {
+    background: #218838;
+    color: #fff;
+}
+.card-header {
+    background: #218838;
+    color: #fff;
+}
+.card-header h4 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+label{
+    font-weight: bold;
+}

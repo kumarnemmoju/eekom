@@ -1,0 +1,71 @@
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h4>Register</h4>
+                </div>
+                <div class="card-body p-4">
+                    <div class="sign-up-link" style="margin-bottom: 20px;">
+                        <span style="float: right;">Already have account? <a routerLink="/login">Sign In</a></span>
+                    </div>
+                    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+                        <div class="mb-3 position-relative">
+                            <label for="firstName" class="form-label">First Name</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="firstName"
+                                formControlName="firstName"
+                                placeholder="First Name"
+                            />
+                        </div>
+                        <div class="mb-3 position-relative">
+                            <label for="lastName" class="form-label">Last Name</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="lastName"
+                                formControlName="lastName"
+                                placeholder="Last Name"
+                            />
+                        </div>
+                        <div class="mb-3 position-relative">
+                            <label for="email" class="form-label">Email Address</label>
+                            <input
+                                type="email"
+                                class="form-control"
+                                id="email"
+                                formControlName="email"
+                                placeholder="Enter your email"
+                            />
+                        </div>
+                        <div class="mb-3 position-relative">
+                            <label for="password" class="form-label">Password</label>
+                            <input
+                                type="password"
+                                class="form-control"
+                                id="password"
+                                formControlName="password"
+                                placeholder="Password"
+                            />
+                        </div>
+                        <div class="mb-3 position-relative">
+                            <label for="confirmPassword" class="form-label">Confirm Password</label>
+                            <input
+                                type="password"
+                                class="form-control"
+                                id="confirmPassword"
+                                formControlName="confirmPassword"
+                                placeholder="Confirm Password"
+                            />
+                        </div>
+                        <button type="submit" class="btn btn-custom btn-block">
+                            Register
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
