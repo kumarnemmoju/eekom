@@ -35,27 +35,39 @@ export class LoginComponent {
         email: formValue.email,
         password: formValue.password,
       };
-
+  
       this.http.post('http://localhost:8080/api/users/login', loginRequest).subscribe(
         async (response: any) => {
+          if (response.message === "User does not exist. Please register.") {
+            this.snackBar.open(response.message, 'Close', {
+              duration: 5000,
+            });
+            return; // Prevent further execution and redirection
+          }
+  
           this.snackBar.open('Login successful', 'Close', {
             duration: 3000,
           });
-
+  
           // Store user data in localStorage and notify other components
           this.setToLocalStorage('EmailId', this.loginForm.value.email);
           this.setToLocalStorage('Password', this.loginForm.value.password);
-
+  
           const user = await this.loadUserDetails();
           if (user) {
             this.setToLocalStorage('UserId', user.id); // Set UserId
             this.userCommunicationService.updateUserName(`${user.firstName} ${user.lastName}`);
           }
-
+  
           this.router.navigate(['/all']);
         },
         (error) => {
-          this.snackBar.open('Login failed: ' + error.error.message, 'Close', {
+          let errorMessage = 'Login failed';
+          if (error.error && error.error.message) {
+            errorMessage = error.error.message;
+          }
+  
+          this.snackBar.open(errorMessage, 'Close', {
             duration: 5000,
           });
         }
@@ -66,6 +78,8 @@ export class LoginComponent {
       });
     }
   }
+  
+  
 
   loadUserDetails(): Promise<any> {
     return new Promise((resolve, reject) => {

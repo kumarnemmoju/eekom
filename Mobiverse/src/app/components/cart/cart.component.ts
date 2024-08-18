@@ -3,6 +3,7 @@ import { UserService } from '../../Services/user.service';
 import { MobileService } from '../../Services/mobile.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { OrderService } from '../../Services/order.service';
 
 @Component({
   selector: 'app-cart',
@@ -18,7 +19,6 @@ export class CartComponent implements OnInit {
   confirmedAddress: any = null;
 
   userAddresses: any[] = [];
-
   selectedAddress = null;
   showAddressForm = false;
 
@@ -35,26 +35,42 @@ export class CartComponent implements OnInit {
     private userService: UserService,
     private mobileService: MobileService,
     private snackBar: MatSnackBar,
-    private router: Router
+    private router: Router,
+    private orderService: OrderService
   ) {}
 
   ngOnInit() {
     this.loadCartItems();
   }
 
-  generateFullJson(){
-    this.fullJson = {
-      mobiles : this.mobilesInCart,
-      selectedAddress : this.selectedAddress,
-      totalPrice : this.totalPrice
+  generateFullJson() {
+    let expandedMobiles: any[] = [];
+    this.mobilesInCart.forEach((mobile: any) => {
+      for (let i = 0; i < mobile.quantity; i++) {
+        expandedMobiles.push({ ...mobile });
+      }
+    });
+
+    const emailId = this.getFromLocalStorage('EmailId');
+    if (!emailId) {
+      this.handleError('Email ID is not available. Cannot generate order.');
+      return;
     }
+
+    this.fullJson = {
+      emailId: emailId,
+      mobilesOrdered: expandedMobiles,
+      deliveryAddress: this.selectedAddress,
+      totalPrice: this.totalPrice,
+    };
+
     console.log(this.fullJson);
   }
 
   loadCartItems() {
     const email = this.getFromLocalStorage('EmailId');
     const pass = this.getFromLocalStorage('Password');
-  
+
     if (email && pass) {
       this.userService.getAllUsers().subscribe(
         (res: any) => {
@@ -65,24 +81,20 @@ export class CartComponent implements OnInit {
           if (user) {
             this.mobilesInCart = user.itemsInCart || [];
             this.userAddresses = user.addresses || [];
-  
-            // Select the last address by default
+
             if (this.userAddresses.length > 0) {
               this.selectedAddress =
                 this.userAddresses[this.userAddresses.length - 1];
-              this.confirmSelectedAddress(); // Confirm the default selected address
+              this.confirmSelectedAddress();
             }
-  
-            // Ensure each mobile in the cart has a quantity field
+
             this.mobilesInCart.forEach((mobile: any) => {
               if (!mobile.hasOwnProperty('quantity')) {
-                mobile.quantity = 1; // Set default quantity to 1 if not already present
+                mobile.quantity = 1;
               }
             });
-  
-            this.calculateTotalPrice(); // Update total price on load
-  
-            // Generate the full JSON after loading all cart items and processing the data
+
+            this.calculateTotalPrice();
             this.generateFullJson();
           } else {
             this.handleError('User not found');
@@ -96,7 +108,7 @@ export class CartComponent implements OnInit {
       this.handleError('Email or Password not found in localStorage');
     }
   }
-  
+
   moveToWishlist(mobileId: number) {
     console.log(`Move mobile with ID ${mobileId} to wishlist`);
     // Implement logic to move the item to the wishlist
@@ -107,7 +119,7 @@ export class CartComponent implements OnInit {
       (total, mobile: any) => total + (mobile.price * mobile.quantity || 1),
       0
     );
-    this.generateFullJson(); // Regenerate JSON after calculating total price
+    this.generateFullJson();
   }
 
   getTotalItems() {
@@ -119,13 +131,11 @@ export class CartComponent implements OnInit {
 
   updateTotalPrice() {
     this.calculateTotalPrice();
-    // The JSON will be regenerated inside calculateTotalPrice
   }
 
   toggleAddressForm() {
     this.showAddressForm = !this.showAddressForm;
     if (this.showAddressForm && this.newAddressForm) {
-      // Scroll to the new address form
       setTimeout(() => {
         if (this.newAddressForm && this.newAddressForm.nativeElement) {
           this.newAddressForm.nativeElement.scrollIntoView({
@@ -152,10 +162,8 @@ export class CartComponent implements OnInit {
               duration: 3000,
             });
 
-            // Add the new address to the user's addresses
             this.userAddresses.push({ ...this.newAddress });
 
-            // Clear the new address form
             this.newAddress = {
               street: '',
               city: '',
@@ -165,7 +173,6 @@ export class CartComponent implements OnInit {
             };
             this.showAddressForm = false;
 
-            // Set the newly added address as the selected address
             this.selectedAddress =
               this.userAddresses[this.userAddresses.length - 1];
             this.confirmSelectedAddress();
@@ -182,7 +189,60 @@ export class CartComponent implements OnInit {
 
   confirmSelectedAddress() {
     this.confirmedAddress = this.selectedAddress;
-    this.generateFullJson(); // Regenerate JSON after confirming address
+    this.generateFullJson();
+  }
+
+  async removeFromCart(mobileId: any): Promise<void> {
+    const userId = this.getFromLocalStorage('UserId');
+    if (userId) {
+      try {
+        const response:any = await this.mobileService.removeMobileFromCart(mobileId, userId).toPromise();
+        this.snackBar.open(response, 'Close', {
+          duration: 3000,
+        });
+        this.mobilesInCart = this.mobilesInCart.filter(
+          (mobile) => mobile.mobileId !== mobileId
+        );
+        this.calculateTotalPrice();
+      } catch (error) {
+        this.snackBar.open('Failed to remove mobile from cart', 'Close', {
+          duration: 5000,
+        });
+        console.error('Failed to remove mobile from cart', error);
+      }
+    } else {
+      this.handleError('User ID not found in localStorage');
+    }
+  }
+
+  async orderNow() {
+    if (!this.fullJson) {
+      this.handleError('Order details are not available. Cannot place the order.');
+      return;
+    }
+
+    try {
+      await this.orderService.orderNow(this.fullJson).toPromise();
+      this.snackBar.open('Order placed successfully!', 'Close', {
+        duration: 3000,
+      });
+
+      // Clear the cart items after a successful order
+      await this.clearCartItems();
+
+      // Redirect to the /yourorders route after the cart is cleared
+      this.router.navigate(['/yourorders']);
+    } catch (error) {
+      this.handleError('Failed to place order. Please try again.', error);
+    }
+  }
+
+  async clearCartItems(): Promise<void> {
+    for (const mobile of this.mobilesInCart) {
+      await this.removeFromCart(mobile.mobileId);
+    }
+    this.mobilesInCart = [];
+    this.calculateTotalPrice();
   }
 
   private getFromLocalStorage(key: string): string | null {
@@ -205,33 +265,5 @@ export class CartComponent implements OnInit {
     this.snackBar.open(errorMessage, 'Close', {
       duration: 5000,
     });
-  }
-
-  removeFromCart(mobileId: any): void {
-    const userId = this.getFromLocalStorage('UserId');
-    if (userId) {
-      this.mobileService.removeMobileFromCart(mobileId, userId).subscribe(
-        (response: string) => {
-          this.snackBar.open(response, 'Close', {
-            duration: 3000,
-          });
-          this.mobilesInCart = this.mobilesInCart.filter(
-            (mobile) => mobile.mobileId !== mobileId
-          ); // Remove the mobile from the local list
-          this.calculateTotalPrice(); // Recalculate total price after removal
-        },
-        (error) => {
-          this.snackBar.open('Failed to remove mobile from cart', 'Close', {
-            duration: 5000,
-          });
-          console.error('Failed to remove mobile from cart', error);
-        }
-      );
-    } else {
-      this.snackBar.open('User ID not found in localStorage', 'Close', {
-        duration: 5000,
-      });
-      console.error('User ID not found in localStorage');
-    }
   }
 }

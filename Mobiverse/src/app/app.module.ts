@@ -13,6 +13,7 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
 import { CartComponent } from './components/cart/cart.component';
+import { YourOrdersComponent } from './components/your-orders/your-orders.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { CartComponent } from './components/cart/cart.component';
     NotFoundComponent,
     RegisterComponent,
     LoginComponent,
-    CartComponent
+    CartComponent,
+    YourOrdersComponent
   ],
   imports: [
     BrowserModule,
