@@ -23,6 +23,13 @@ export class OrderService {
       .pipe(catchError(this.handleError));
   }
 
+  getInvoice(order:any): Observable<string> {
+    return this.http
+      .post(`${this.apiUrl}/invoice-orders`, order, { responseType: 'text' })
+      .pipe(catchError(this.handleError));
+  }
+
+
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'Unknown error!';
     if (error.error instanceof ErrorEvent) {

@@ -1,26 +1,37 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-.btn-primary{
-    background-color: #28a745 !important;
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+.btn-primary {
+  background-color: #28a745 !important;
 }
 
-
-
-
 .action-buttons {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
 }
 
 .btn-custom {
-    width: 48%;
-    font-size: 0.8rem; /* Reduced font size */
+  width: 48%;
+  font-size: 0.8rem; /* Reduced font size */
 }
 
 .btn-custom:hover {
-    background-color: #218838 !important;
-    border-color: #1e7e34 !important;
+  background-color: #218838 !important;
+  border-color: #1e7e34 !important;
 }
+
+::ng-deep .custom-snackbar {
+  background-color: red !important;
+  color: white !important;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

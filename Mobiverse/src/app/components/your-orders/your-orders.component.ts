@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { OrderService } from '../../Services/order.service';
-
+import { MatSnackBar } from '@angular/material/snack-bar';
 interface Mobile {
   id: number;
   mobileId: number;
@@ -41,85 +41,107 @@ interface Order {
 export class YourOrdersComponent implements OnInit {
   orders: Order[] = [];
 
-  constructor(private orderService: OrderService) {}
+  constructor(
+    private orderService: OrderService,
+    private snackBar: MatSnackBar
+  ) {}
 
   ngOnInit(): void {
     this.fetchOrders();
   }
 
+  getInvoicePdf(order: Order) {
+    const orderFl = {
+      emailId: order.emailId,
+      mobilesOrdered: order.mobilesOrdered.map((mobile: Mobile) => ({
+        mobileId: mobile.mobileId,
+        name: mobile.name,
+        series: mobile.series,
+        year: mobile.year,
+        ram: mobile.ram,
+        storage: mobile.storage,
+        price: mobile.price,
+        originalPrice: mobile.originalPrice,
+        discount: mobile.discount,
+        rating: mobile.rating,
+        reviews: mobile.reviews,
+        imageUrl: mobile.imageUrl,
+      })),
+      deliveryAddress: order.deliveryAddress,
+      totalPrice: order.totalPrice,
+    };
+
+    this.orderService.getInvoice(orderFl).subscribe({
+      next: (res) => {
+        this.snackBar.open(res, 'Close', {
+          duration: 3000
+        });
+      },
+      error: (err) => {
+        console.error('Error generating invoice:', err);
+
+        let errorMessage =
+          'Failed to generate invoice. Please try again later.';
+
+        if (err.status === 500) {
+          errorMessage =
+            'Internal Server Error: Unable to generate the invoice at this time. Please try again later or contact support.';
+        } else if (err.status === 400) {
+          errorMessage =
+            'Bad Request: The order details seem to be incorrect. Please check and try again.';
+        } else if (err.status === 404) {
+          errorMessage =
+            'Service Not Found: The invoice generation service is unavailable. Please try again later.';
+        }
+
+        this.snackBar.open(errorMessage, 'Close', {
+          duration: 3000,
+        });
+      },
+    });
+  }
+
   fetchOrders() {
     if (typeof window !== 'undefined' && localStorage) {
       const email = localStorage.getItem('EmailId');
-      console.log(email);
       if (email) {
         this.orderService.getOrders(email).subscribe(
-          (orders:any) => {
-            console.log(orders);
+          (orders: any) => {
             this.orders = orders;
+            this.snackBar.open('Orders fetched successfully!', 'Close', {
+              duration: 3000,
+            });
           },
           (error) => {
             console.error('Error fetching orders:', error);
-            // Handle error
+            this.snackBar.open(
+              'Failed to fetch orders. Please try again later.',
+              'Close',
+              {
+                duration: 3000,
+              }
+            );
           }
         );
       } else {
         console.error('Email ID not found in localStorage');
-        // Handle the case where the email is not available
+        this.snackBar.open(
+          'Email ID not found. Please log in again.',
+          'Close',
+          {
+            duration: 3000,
+          }
+        );
       }
     } else {
       console.error('localStorage is not available');
-      // Handle the case where localStorage is not available
+      this.snackBar.open(
+        'localStorage is not available in your browser.',
+        'Close',
+        {
+          duration: 3000,
+        }
+      );
     }
-
-    // Sample data based on your backend response for demonstration
-    this.orders = [
-      {
-        orderId: 1,
-        emailId: 'kavi@gmail.com',
-        mobilesOrdered: [
-          {
-            id: 1,
-            mobileId: 3,
-            name: 'Google Pixel 6',
-            series: 'Pixel',
-            year: 2021,
-            ram: '8GB',
-            storage: '128GB',
-            price: 699,
-            originalPrice: 799,
-            discount: 13,
-            rating: 4,
-            reviews: 2700,
-            imageUrl:
-              'https://m.media-amazon.com/images/I/619VJYWIbXL._SL1200_.jpg',
-          },
-          {
-            id: 2,
-            mobileId: 8,
-            name: 'OnePlus 9 Pro',
-            series: 'OnePlus',
-            year: 2021,
-            ram: '12GB',
-            storage: '256GB',
-            price: 969,
-            originalPrice: 1069,
-            discount: 9,
-            rating: 5,
-            reviews: 4100,
-            imageUrl:
-              'https://m.media-amazon.com/images/I/619VJYWIbXL._SL1200_.jpg',
-          },
-        ],
-        deliveryAddress: {
-          street: '1309',
-          city: 'New Haven',
-          state: 'Connecticut',
-          postalCode: '15623',
-          country: 'USA',
-        },
-        totalPrice: 5000,
-      },
-      // Add more orders as needed
-    ];
   }
 }
