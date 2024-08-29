@@ -181,8 +181,8 @@ export class WeatherService {
     this.weekData = [];
     this.temperatureData = new TemperatureData();
     this.todaysHighlight = new TodaysHighlight();
-    var latitude = 0;
-    var longitude = 0;
+    let latitude = 0;
+    let longitude = 0;
 
     this.setLoading(true); // Start loading before the first API call
 
@@ -198,7 +198,8 @@ export class WeatherService {
         this.prepareData();
       }),
       finalize(() => {
-        of(null).pipe(delay(3000)).subscribe(() => this.setLoading(false)); // Ensure loader stays for at least 3 seconds
+        // Ensure loader stays for at least 1 second
+        of(null).pipe(delay(1000)).subscribe(() => this.setLoading(false));
       })
     );
 

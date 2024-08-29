@@ -1,0 +1,17 @@
+
+.card-title {
+    color: #007bff;
+}
+
+.card-footer {
+    background-color: #f1f1f1;
+}
+
+.text-danger {
+    color: #dc3545 !important;
+}
+
+h3, h4 {
+    margin-top: 20px;
+    color: #343a40;
+}

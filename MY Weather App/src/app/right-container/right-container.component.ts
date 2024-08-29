@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 import { faThumbsDown } from '@fortawesome/free-solid-svg-icons';
 import { faFaceSmile } from '@fortawesome/free-solid-svg-icons';
 import { faFaceFrown } from '@fortawesome/free-solid-svg-icons';
 import { WeatherService } from '../Services/weather.service';
+import { MatDialog } from '@angular/material/dialog';
+import { InfoComponent } from '../info/info.component';
 
 @Component({
   selector: 'app-right-container',
@@ -13,6 +15,16 @@ import { WeatherService } from '../Services/weather.service';
 export class RightContainerComponent {
 
   constructor(public weatherService: WeatherService){};
+
+  readonly dialog = inject(MatDialog);
+
+  openDialog() {
+    const dialogRef = this.dialog.open(InfoComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
 
   //fa icons for tumbs up/down and smile/frown
   faThumbsUp:any = faThumbsUp;

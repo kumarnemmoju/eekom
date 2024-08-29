@@ -8,21 +8,26 @@ import { RightContainerComponent } from './right-container/right-container.compo
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { HttpClientModule } from '@angular/common/http';
 import { LoaderComponent } from './loader/loader.component'
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';  // Add this line
-
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';  // Add this line
+import {MatDialogModule} from '@angular/material/dialog';
+import { InfoComponent } from './info/info.component';
 @NgModule({
   declarations: [
     AppComponent,
     LeftContainerComponent,
     RightContainerComponent,
-    LoaderComponent
+    LoaderComponent,
+    InfoComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FontAwesomeModule,
     HttpClientModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    BrowserAnimationsModule,
+    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]
