@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { OrderService } from '../../Services/order.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { jsPDF } from 'jspdf';
+import html2canvas from 'html2canvas';
 interface Mobile {
   id: number;
   mobileId: number;
@@ -54,7 +56,6 @@ export class YourOrdersComponent implements OnInit {
     const orderFl = {
       emailId: order.emailId,
       mobilesOrdered: order.mobilesOrdered.map((mobile: Mobile) => ({
-        mobileId: mobile.mobileId,
         name: mobile.name,
         series: mobile.series,
         year: mobile.year,
@@ -62,7 +63,6 @@ export class YourOrdersComponent implements OnInit {
         storage: mobile.storage,
         price: mobile.price,
         originalPrice: mobile.originalPrice,
-        discount: mobile.discount,
         rating: mobile.rating,
         reviews: mobile.reviews,
         imageUrl: mobile.imageUrl,
@@ -70,36 +70,98 @@ export class YourOrdersComponent implements OnInit {
       deliveryAddress: order.deliveryAddress,
       totalPrice: order.totalPrice,
     };
-
-    this.orderService.getInvoice(orderFl).subscribe({
-      next: (res) => {
-        this.snackBar.open(res, 'Close', {
-          duration: 3000
-        });
-      },
-      error: (err) => {
-        console.error('Error generating invoice:', err);
-
-        let errorMessage =
-          'Failed to generate invoice. Please try again later.';
-
-        if (err.status === 500) {
-          errorMessage =
-            'Internal Server Error: Unable to generate the invoice at this time. Please try again later or contact support.';
-        } else if (err.status === 400) {
-          errorMessage =
-            'Bad Request: The order details seem to be incorrect. Please check and try again.';
-        } else if (err.status === 404) {
-          errorMessage =
-            'Service Not Found: The invoice generation service is unavailable. Please try again later.';
-        }
-
-        this.snackBar.open(errorMessage, 'Close', {
-          duration: 3000,
-        });
-      },
-    });
+  
+    const doc = new jsPDF();
+  
+    // Load the MOBIVERSE logo (replace with your actual logo path)
+    const img = new Image();
+    img.src = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdEAwAvhEPitkR9GbGy0yH9F12jJ29UL54EQ&s'; // Replace with the actual path to your logo
+  
+    img.onload = () => {
+      doc.addImage(img, 'PNG', 10, 10, 50, 15);
+  
+      // Center the title 'Invoice'
+      doc.setFontSize(18);
+      doc.setFont('helvetica', 'bold');
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const title = 'Invoice';
+      const textWidth = doc.getTextWidth(title);
+      const xOffset = (pageWidth - textWidth) / 2;
+      doc.text(title, xOffset, 30);
+  
+      // Add order details
+      doc.setFontSize(12);
+      doc.setFont('helvetica', 'bold');
+      doc.text(`Email ID:`, 10, 50);
+      doc.setFont('helvetica', 'normal');
+      doc.text(orderFl.emailId, 40, 50);
+  
+      doc.setFont('helvetica', 'bold');
+      doc.text('Delivery Address:', 10, 60);
+      const address = `${orderFl.deliveryAddress.street}, ${orderFl.deliveryAddress.city}, ${orderFl.deliveryAddress.state} ${orderFl.deliveryAddress.postalCode}, ${orderFl.deliveryAddress.country}`;
+      const addressLines = this.splitTextToSize(address, pageWidth - 20);
+      doc.setFont('helvetica', 'normal');
+      doc.text(addressLines, 10, 70);
+  
+      // Add table headers without Mobile ID and Discount
+      const tableHeaders = [
+        'Name',
+        'Series',
+        'Year',
+        'RAM',
+        'Storage',
+        'Price',
+        'Original Price',
+      ];
+  
+      let startY = 90; // Adjusted startY to accommodate the delivery address
+      const colXPositions = [10, 40, 70, 90, 110, 130, 150]; // Adjusted column positions
+  
+      doc.setFont('helvetica', 'bold');
+      tableHeaders.forEach((header, index) => {
+        doc.text(header, colXPositions[index], startY);
+      });
+  
+      // Add table content
+      startY += 10;
+      const rowHeight = 10; // Space between rows
+      doc.setFont('helvetica', 'normal');
+      orderFl.mobilesOrdered.forEach((mobile, rowIndex) => {
+        doc.text(mobile.name, colXPositions[0], startY + rowIndex * rowHeight);
+        doc.text(mobile.series, colXPositions[1], startY + rowIndex * rowHeight);
+        doc.text(mobile.year.toString(), colXPositions[2], startY + rowIndex * rowHeight);
+        doc.text(mobile.ram, colXPositions[3], startY + rowIndex * rowHeight);
+        doc.text(mobile.storage, colXPositions[4], startY + rowIndex * rowHeight);
+        doc.text(mobile.price.toString(), colXPositions[5], startY + rowIndex * rowHeight);
+        doc.text(mobile.originalPrice.toString(), colXPositions[6], startY + rowIndex * rowHeight);
+      });
+  
+      // Add total price
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(14);
+      doc.text(`Total Price:`, 10, startY + orderFl.mobilesOrdered.length * rowHeight + 20);
+      doc.setFont('helvetica', 'normal');
+      doc.text(`$${orderFl.totalPrice}`, 40, startY + orderFl.mobilesOrdered.length * rowHeight + 20);
+  
+      // Save the PDF
+      doc.save('invoice.pdf');
+    };
+  
+    img.onerror = (err) => {
+      console.error('Failed to load image:', err);
+      this.snackBar.open('Failed to load image for invoice. Please try again later.', 'Close', {
+        duration: 3000,
+      });
+    };
   }
+  
+  // Helper function to split long text into multiple lines
+  splitTextToSize(text: string, maxWidth: number): string[] {
+    const doc = new jsPDF();
+    return doc.splitTextToSize(text, maxWidth);
+  }
+  
+
 
   fetchOrders() {
     if (typeof window !== 'undefined' && localStorage) {
